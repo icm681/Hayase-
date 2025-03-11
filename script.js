@@ -8,8 +8,8 @@ const clearChatButton = document.getElementById("deleteButton");
 let currentUserMessage = null;
 let isGeneratingResponse = false;
 
-const GOOGLE_API_KEY = "AIzaSyCC4u0mpE3r2JoIDfcR8M7WmHAWAEyNBXU"; // Bukan Apikey Gw 😂😂
-const API_REQUEST_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=AIzaSyCC4u0mpE3r2JoIDfcR8M7WmHAWAEyNBXU`;
+// Ganti API_REQUEST_URL untuk menggunakan backend di Vercel
+const API_REQUEST_URL = "/api/gemini";  
 
 const loadSavedChatHistory = () => {
     const savedConversations = JSON.parse(localStorage.getItem("saved-api-chats")) || [];
@@ -22,12 +22,10 @@ const loadSavedChatHistory = () => {
 
     savedConversations.forEach(conversation => {
         const userMessageHtml = `
-
             <div class="message__content">
                 <img class="message__avatar" src="assets/profile.png" alt="User avatar">
                <p class="message__text">${conversation.userMessage}</p>
             </div>
-        
         `;
 
         const outgoingMessageElement = createChatMessageElement(userMessageHtml, "message--outgoing");
@@ -38,7 +36,6 @@ const loadSavedChatHistory = () => {
         const rawApiResponse = responseText;
 
         const responseHtml = `
-        
            <div class="message__content">
                 <img class="message__avatar" src="assets/gemini.svg" alt="Gemini avatar">
                 <p class="message__text"></p>
@@ -49,7 +46,6 @@ const loadSavedChatHistory = () => {
                 </div>
             </div>
             <span onClick="copyMessageToClipboard(this)" class="message__icon hide"><i class='bx bx-copy-alt'></i></span>
-        
         `;
 
         const incomingMessageElement = createChatMessageElement(responseHtml, "message--incoming");
@@ -68,35 +64,6 @@ const createChatMessageElement = (htmlContent, ...cssClasses) => {
     messageElement.classList.add("message", ...cssClasses);
     messageElement.innerHTML = htmlContent;
     return messageElement;
-}
-
-const showTypingEffect = (rawText, htmlText, messageElement, incomingMessageElement, skipEffect = false) => {
-    const copyIconElement = incomingMessageElement.querySelector(".message__icon");
-    copyIconElement.classList.add("hide");
-
-    if (skipEffect) {
-        messageElement.innerHTML = htmlText;
-        hljs.highlightAll();
-        addCopyButtonToCodeBlocks();
-        copyIconElement.classList.remove("hide");
-        isGeneratingResponse = false;
-        return;
-    }
-
-    const wordsArray = rawText.split(' ');
-    let wordIndex = 0;
-
-    const typingInterval = setInterval(() => {
-        messageElement.innerText += (wordIndex === 0 ? '' : ' ') + wordsArray[wordIndex++];
-        if (wordIndex === wordsArray.length) {
-            clearInterval(typingInterval);
-            isGeneratingResponse = false;
-            messageElement.innerHTML = htmlText;
-            hljs.highlightAll();
-            addCopyButtonToCodeBlocks();
-            copyIconElement.classList.remove("hide");
-        }
-    }, 75);
 };
 
 const requestApiResponse = async (incomingMessageElement) => {
@@ -137,37 +104,8 @@ const requestApiResponse = async (incomingMessageElement) => {
     }
 };
 
-const addCopyButtonToCodeBlocks = () => {
-    const codeBlocks = document.querySelectorAll('pre');
-    codeBlocks.forEach((block) => {
-        const codeElement = block.querySelector('code');
-        let language = [...codeElement.classList].find(cls => cls.startsWith('language-'))?.replace('language-', '') || 'Text';
-
-        const languageLabel = document.createElement('div');
-        languageLabel.innerText = language.charAt(0).toUpperCase() + language.slice(1);
-        languageLabel.classList.add('code__language-label');
-        block.appendChild(languageLabel);
-
-        const copyButton = document.createElement('button');
-        copyButton.innerHTML = `<i class='bx bx-copy'></i>`;
-        copyButton.classList.add('code__copy-btn');
-        block.appendChild(copyButton);
-
-        copyButton.addEventListener('click', () => {
-            navigator.clipboard.writeText(codeElement.innerText).then(() => {
-                copyButton.innerHTML = `<i class='bx bx-check'></i>`;
-                setTimeout(() => copyButton.innerHTML = `<i class='bx bx-copy'></i>`, 2000);
-            }).catch(err => {
-                console.error("Copy failed:", err);
-                alert("Unable to copy text!");
-            });
-        });
-    });
-};
-
 const displayLoadingAnimation = () => {
     const loadingHtml = `
-
         <div class="message__content">
             <img class="message__avatar" src="assets/gemini.svg" alt="Gemini avatar">
             <p class="message__text"></p>
@@ -178,21 +116,12 @@ const displayLoadingAnimation = () => {
             </div>
         </div>
         <span onClick="copyMessageToClipboard(this)" class="message__icon hide"><i class='bx bx-copy-alt'></i></span>
-    
     `;
 
     const loadingMessageElement = createChatMessageElement(loadingHtml, "message--incoming", "message--loading");
     chatHistoryContainer.appendChild(loadingMessageElement);
 
     requestApiResponse(loadingMessageElement);
-};
-
-const copyMessageToClipboard = (copyButton) => {
-    const messageContent = copyButton.parentElement.querySelector(".message__text").innerText;
-
-    navigator.clipboard.writeText(messageContent);
-    copyButton.innerHTML = `<i class='bx bx-check'></i>`;
-    setTimeout(() => copyButton.innerHTML = `<i class='bx bx-copy-alt'></i>`, 1000);
 };
 
 const handleOutgoingMessage = () => {
@@ -202,12 +131,10 @@ const handleOutgoingMessage = () => {
     isGeneratingResponse = true;
 
     const outgoingMessageHtml = `
-    
         <div class="message__content">
             <img class="message__avatar" src="assets/profile.png" alt="User avatar">
             <p class="message__text"></p>
         </div>
-
     `;
 
     const outgoingMessageElement = createChatMessageElement(outgoingMessageHtml, "message--outgoing");
