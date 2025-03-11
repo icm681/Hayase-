@@ -9,7 +9,7 @@ let currentUserMessage = null;
 let isGeneratingResponse = false;
 
 // Ganti API_REQUEST_URL untuk menggunakan backend di Vercel
-const API_REQUEST_URL = "/api/gemini";  
+const API_REQUEST_URL = "./api/gemini.js";  
 
 const loadSavedChatHistory = () => {
     const savedConversations = JSON.parse(localStorage.getItem("saved-api-chats")) || [];
