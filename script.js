@@ -66,6 +66,35 @@ const createChatMessageElement = (htmlContent, ...cssClasses) => {
     return messageElement;
 };
 
+const showTypingEffect = (rawText, htmlText, messageElement, incomingMessageElement, skipEffect = false) => {
+    const copyIconElement = incomingMessageElement.querySelector(".message__icon");
+    copyIconElement.classList.add("hide");
+
+    if (skipEffect) {
+        messageElement.innerHTML = htmlText;
+        hljs.highlightAll();
+        addCopyButtonToCodeBlocks();
+        copyIconElement.classList.remove("hide");
+        isGeneratingResponse = false;
+        return;
+    }
+
+    const wordsArray = rawText.split(' ');
+    let wordIndex = 0;
+
+    const typingInterval = setInterval(() => {
+        messageElement.innerText += (wordIndex === 0 ? '' : ' ') + wordsArray[wordIndex++];
+        if (wordIndex === wordsArray.length) {
+            clearInterval(typingInterval);
+            isGeneratingResponse = false;
+            messageElement.innerHTML = htmlText;
+            hljs.highlightAll();
+            addCopyButtonToCodeBlocks();
+            copyIconElement.classList.remove("hide");
+        }
+    }, 75);
+};
+
 const requestApiResponse = async (incomingMessageElement) => {
     const messageTextElement = incomingMessageElement.querySelector(".message__text");
 
