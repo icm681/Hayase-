@@ -34,6 +34,33 @@ const loadSavedChatHistory = () => {
         const responseText = conversation.apiResponse?.candidates?.[0]?.content?.parts?.[0]?.text;
         const parsedApiResponse = marked.parse(responseText);
         const rawApiResponse = responseText;
+        const addCopyButtonToCodeBlocks = () => {
+    const codeBlocks = document.querySelectorAll('pre');
+    codeBlocks.forEach((block) => {
+        const codeElement = block.querySelector('code');
+        let language = [...codeElement.classList].find(cls => cls.startsWith('language-'))?.replace('language-', '') || 'Text';
+
+        const languageLabel = document.createElement('div');
+        languageLabel.innerText = language.charAt(0).toUpperCase() + language.slice(1);
+        languageLabel.classList.add('code__language-label');
+        block.appendChild(languageLabel);
+
+        const copyButton = document.createElement('button');
+        copyButton.innerHTML = `<i class='bx bx-copy'></i>`;
+        copyButton.classList.add('code__copy-btn');
+        block.appendChild(copyButton);
+
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText(codeElement.innerText).then(() => {
+                copyButton.innerHTML = `<i class='bx bx-check'></i>`;
+                setTimeout(() => copyButton.innerHTML = `<i class='bx bx-copy'></i>`, 2000);
+            }).catch(err => {
+                console.error("Copy failed:", err);
+                alert("Unable to copy text!");
+            });
+        });
+    });
+};
 
         const responseHtml = `
            <div class="message__content">
