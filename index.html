@@ -1,36 +1,31 @@
-<!-- CREDIT -->
-<!-- Dibuat 80% Oleh Lemon, termasuk style, foto, logo, cari dan pemasangan api. 20% GPT untuk repair error-->
-<!-- KALO MAU COPY KODENYA, JANGAN LUPA FOLLOW LAHHH AKUN GITHUB GW, ATAU *MINIMAL* KASIH BINTANG, Capek Aku Wak... -->
-<!-- [ LemonSync ] -->
-<!-- Tuh Akun GitHub Gw, atau https://github.com/LemonSync -->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./assets/gemini.svg" type="image/jpeg">
+    <meta name="description" content="Hayase AI Hoshizora - Your AI Assistant">
+    <link rel="icon" href="./assets/gemini.svg" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
-    <title>Google Hayase AI | Hoshizora</title>
+    <title>Hayase AI | Hoshizora</title>
 </head>
-
 <body>
-
     <nav class="navbar">
-        <h3 class="navbar__logo">Hayase Ai Hoshizora</h3>
-        <button class="navbar__button" id="themeToggler"><i class='bx bx-sun'></i></button>
+        <h3 class="navbar__logo">Hayase AI Hoshizora</h3>
+        <button class="navbar__button" id="themeToggler" aria-label="Toggle theme">
+            <i class='bx bx-sun'></i>
+        </button>
     </nav>
-
+    
     <header class="header">
         <div class="header__title">
             <h1>Hello, There!</h1>
             <h2>How can I help you today?</h2>
         </div>
+        
         <div class="suggests">
-            <div class="suggests__item">
+            <div class="suggests__item" tabindex="0">
                 <p class="suggests__item-text">
                     Give tips on helping kids finish their homework on time
                 </p>
@@ -38,7 +33,8 @@
                     <i class='bx bx-stopwatch'></i>
                 </div>
             </div>
-            <div class="suggests__item">
+            
+            <div class="suggests__item" tabindex="0">
                 <p class="suggests__item-text">
                     Help me write an out-of-office email
                 </p>
@@ -46,7 +42,8 @@
                     <i class='bx bx-edit-alt'></i>
                 </div>
             </div>
-            <div class="suggests__item">
+            
+            <div class="suggests__item" tabindex="0">
                 <p class="suggests__item-text">
                     Give me phrases to learn a new language
                 </p>
@@ -54,7 +51,8 @@
                     <i class='bx bx-compass'></i>
                 </div>
             </div>
-            <div class="suggests__item">
+            
+            <div class="suggests__item" tabindex="0">
                 <p class="suggests__item-text">
                     Show me how to build something by hand
                 </p>
@@ -64,31 +62,29 @@
             </div>
         </div>
     </header>
-
-    <section class="chats"></section>
-
+    
+    <section class="chats" aria-live="polite"></section>
+    
     <section class="prompt">
         <form action="#" class="prompt__form" novalidate>
             <div class="prompt__input-wrapper">
-                <input type="text" placeholder="Enter a prompt here" class="prompt__form-input" required>
-                <button class="prompt__form-button" id="sendButton">
+                <input type="text" placeholder="Enter a prompt here" class="prompt__form-input" 
+                       aria-label="Enter your prompt" required>
+                <button type="submit" class="prompt__form-button" id="sendButton" aria-label="Send message">
                     <i class='bx bx-send'></i>
                 </button>
-                <button class="prompt__form-button" id="deleteButton">
+                <button type="button" class="prompt__form-button" id="deleteButton" aria-label="Clear conversation">
                     <i class='bx bx-trash'></i>
                 </button>
             </div>
         </form>
         <p class="prompt__disclaim">
-            Gemini may display inaccurate info, including about people, so double-check its responses.
+            Hayase AI may display inaccurate info, including about people, so double-check its responses.
         </p>
     </section>
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
